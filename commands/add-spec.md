@@ -21,4 +21,3 @@ Add a new feature to an already-initialized harness. Use the `harness-interview`
 
 Writes only inside `ai-harness/specs/<feature>/` on the current branch. No git commands.
 
---- END FILE ---

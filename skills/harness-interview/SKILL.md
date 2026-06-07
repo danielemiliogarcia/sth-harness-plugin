@@ -31,4 +31,3 @@ For each `<!-- CUSTOMIZE -->` block, ask for: what the project is, who it's for,
 ## Validation
 After writing, re-read both files: do they match the bare freeform shape? Do IDs cross-cite correctly? Is the legal vocabulary used verbatim?
 
---- END FILE ---

@@ -29,4 +29,3 @@ STOP and hand back when ANY of:
 ## Before stopping
 Update `state.md` (phase, last completed step, next action, task states). Report the stop reason and the single next action. The file is the truth — never rely on conversation memory.
 
---- END FILE ---

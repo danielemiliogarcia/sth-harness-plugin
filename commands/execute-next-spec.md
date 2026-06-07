@@ -20,4 +20,3 @@ Work the next pending feature following the harness. Use the `harness-execute` s
 
 Read only the chosen feature's folder plus the shared context files the step needs. Do not touch other features.
 
---- END FILE ---
