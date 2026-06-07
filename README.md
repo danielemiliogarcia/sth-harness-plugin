@@ -22,3 +22,20 @@ The copied folder is always named `ai-harness/`; this plugin is `sth-harness`.
 ## Install (local dev)
 Add this directory as a plugin in Claude Code (plugin marketplace/local path),
 then run `/sth-harness:init` in a target repo.
+
+## Maintaining the bundled payload
+`template/ai-harness/` is a **version-pinned snapshot** of the canonical
+ai-harness. Bundling (instead of fetching at runtime) keeps `init` offline and
+deterministic, but the snapshot does not auto-update — it will drift as the
+canonical harness evolves. When you want the plugin to ship a newer harness,
+re-bundle deliberately and commit:
+
+```bash
+# from the plugin root, with <canonical> = path to the up-to-date ai-harness
+rm -rf template/ai-harness
+cp -R <canonical>/ai-harness template/ai-harness
+git add template/ai-harness && git commit -m "chore: re-bundle ai-harness payload"
+```
+
+After re-bundling, run the script tests (`tests/*.test.sh`) to confirm the
+install + wiring still pass against the new payload.
