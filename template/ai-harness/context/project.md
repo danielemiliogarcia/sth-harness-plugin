@@ -10,6 +10,19 @@ live. It is part of the minimal context a session may load.
 
 ---
 
+## Reference documents
+
+> **Link the authoritative docs; don't duplicate them here.** `project.md` is a
+> thin context hub — a few stable facts plus pointers. Keep it small (it is
+> shared-static; see [`../parallel-work.md`](../parallel-work.md)).
+
+<!-- CUSTOMIZE -->
+- Root [`README.md`](../../README.md) — _one line on what it covers._
+- _Architecture / design docs, ADRs, API specs, … as they exist._
+
+> If the root `README.md` is thin, either enrich it, link more docs above, or
+> capture the missing facts in the sections below.
+
 ## What this project is
 
 <!-- CUSTOMIZE -->
@@ -17,6 +30,9 @@ _One or two sentences: the product/system and the problem it solves._
 
 Example: "A service that ingests orders, validates them against inventory, and
 emits fulfilment events."
+
+**Application type:** <!-- CUSTOMIZE --> _frontend | backend | fullstack | CLI |
+library | mobile | other._
 
 ## Who it is for
 

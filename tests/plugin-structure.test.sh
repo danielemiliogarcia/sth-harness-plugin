@@ -21,7 +21,7 @@ for c in init add-spec execute-next-spec; do exists "commands/$c.md"; done
 for s in harness-interview harness-execute harness-tool-linking; do exists "skills/$s/SKILL.md"; done
 
 # scripts the commands call, executable
-for sc in copy-harness link-claude-code; do
+for sc in copy-harness link-claude-code seed-readme; do
   exists "scripts/$sc.sh"
   [ -x "$ROOT/scripts/$sc.sh" ] && check yes yes "$sc.sh executable" || check no yes "$sc.sh executable"
 done
