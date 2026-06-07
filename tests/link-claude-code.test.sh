@@ -4,6 +4,7 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPT="$SCRIPT_DIR/../scripts/link-claude-code.sh"
+TOOL_LINKING="$SCRIPT_DIR/../template/ai-harness/tool-linking.md"
 pass=0; fail=0
 check(){ if [ "$1" = "$2" ]; then pass=$((pass+1)); else fail=$((fail+1)); echo "FAIL: $3 (got '$1' want '$2')"; fi; }
 
@@ -26,12 +27,22 @@ bash "$SCRIPT" "$d3" >/dev/null 2>&1
 grep -qF 'Some rules.' "$d3/CLAUDE.md" && check yes yes "user content kept" || check no yes "user content kept"
 grep -qF '@AGENTS.md' "$d3/CLAUDE.md" && check yes yes "import appended" || check no yes "import appended"
 
-# 4: pre-existing AGENTS.md already linked -> skipped (byte-identical)
+# 4: pre-existing AGENTS.md already linked -> AGENTS skipped (byte-identical), CLAUDE still created
 d4="$(mktemp -d)"
 printf 'see ai-harness/START-HERE.md\n' > "$d4/AGENTS.md"
 before="$(cat "$d4/AGENTS.md")"
 bash "$SCRIPT" "$d4" >/dev/null 2>&1
 check "$(cat "$d4/AGENTS.md")" "$before" "AGENTS already-linked skipped"
+[ -f "$d4/CLAUDE.md" ] && check yes yes "CLAUDE created when AGENTS pre-linked" || check no yes "CLAUDE created when AGENTS pre-linked"
+
+# 5: drift guard -> every non-empty line of the generated AGENTS.md exists verbatim
+#    in the canonical snippet source (tool-linking.md). Fails if the two diverge.
+drift=0
+while IFS= read -r line; do
+  [ -z "$line" ] && continue
+  grep -qF -- "$line" "$TOOL_LINKING" || { drift=1; echo "  drift: not in tool-linking.md: $line"; }
+done < "$d1/AGENTS.md"
+check "$drift" "0" "AGENTS snippet matches canonical tool-linking.md"
 
 echo "pass=$pass fail=$fail"
 [ "$fail" -eq 0 ]
