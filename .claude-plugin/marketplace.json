@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "sth-harness",
+  "description": "Install and drive the model-agnostic ai-harness from Claude Code.",
+  "owner": {
+    "name": "danielemiliogarcia"
+  },
+  "plugins": [
+    {
+      "name": "sth-harness",
+      "description": "Scaffold the ai-harness, interview to fill specs, and execute pending specs through the spec-driven, hexagonal, stateful workflow.",
+      "version": "0.1.0",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}
