@@ -14,7 +14,7 @@ Bootstrap the AI harness into the user's repository, then create the first featu
 1. Install the harness folder verbatim:
    `bash "${CLAUDE_PLUGIN_ROOT}/scripts/copy-harness.sh" "$PWD"`
    Confirm exit 0 and that `./ai-harness/START-HERE.md` now exists. On non-zero exit, report the script's stderr and stop.
-2. Fill `./ai-harness/context/project.md`: for every `<!-- CUSTOMIZE -->` block, interview ONE question at a time (what the project is, who it's for, goals/non-goals, code location, build/run/test/lint commands, tech stack, glossary). Replace every placeholder; leave no CUSTOMIZE marker behind.
+2. Fill `./ai-harness/context/project.md` via the `harness-interview` skill: detect and link existing docs (assess the README's richness — if thin, say so and link more docs or run the fuller interview), set the app-type, and if no README exists offer to seed one with `scripts/seed-readme.sh`. Replace every `<!-- CUSTOMIZE -->`; link, don't duplicate.
 3. Wire the user's AI tool to the harness — follow the `harness-tool-linking` skill: detect the tool (confirm with the user), then write the matching adapter(s). For Claude Code this creates/updates `AGENTS.md` and `CLAUDE.md` (which imports it via `@AGENTS.md`), so the tool bootstraps from `ai-harness/START-HERE.md`.
 4. Create the FIRST feature:
    - Read `./ai-harness/specs/global-spec-info.md` and `./ai-harness/specs/global-state-info.md` for the exact fields and legal vocabulary.

@@ -15,8 +15,27 @@ Turn a user's intent into filled harness files by asking ONE question at a time.
 - Never invent requirements, acceptance, or design. If the user is unsure, offer options or record an open question.
 - Map answers 1:1 onto the bare freeform fields. Keep per-feature files short — guidance lives in the global references, not in the feature files.
 
-## Filling project.md
-For each `<!-- CUSTOMIZE -->` block, ask for: what the project is, who it's for, goals/non-goals, code location, build/run/test/lint commands, tech stack, glossary. Replace each placeholder; never leave a CUSTOMIZE marker behind.
+## Filling project.md (system context)
+`project.md` is the system-context hub. Fill it as follows:
+
+1. **Detect existing docs.** Look for a root `README.md` and common docs
+   (`docs/`, `ARCHITECTURE.md`, `CONTRIBUTING.md`).
+2. **Assess the README.** Does it describe what the project is, its goal, the
+   tech, and the structure?
+   - **Rich enough** -> link it (and the other docs) under *Reference documents*
+     in `project.md`, then interview only for the gaps (build/run/test commands,
+     app-type if unclear). Keep it light.
+   - **Thin or missing key facts** -> tell the user the README is thin, and offer
+     to either point you at more docs to link, or answer the fuller interview so
+     `project.md` captures the missing facts directly.
+3. **Set the app-type** (`frontend | backend | fullstack | CLI | library |
+   mobile | other`) — ask if it cannot be derived from the docs.
+4. **From-scratch (no README):** fill `project.md` from the interview, then
+   **offer (ask first)** to seed a minimal README:
+   `bash "${CLAUDE_PLUGIN_ROOT}/scripts/seed-readme.sh" "$PWD"` (idempotent,
+   never clobbers).
+5. Replace every `<!-- CUSTOMIZE -->` you fill; link, don't duplicate — keep
+   `project.md` a small hub.
 
 ## Filling a feature (spec.md + state.md)
 1. Feature name (kebab-case).
