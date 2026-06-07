@@ -1,0 +1,6 @@
+{
+  "name": "sth-harness",
+  "version": "0.1.0",
+  "description": "Install and drive the model-agnostic ai-harness: scaffold the harness folder, interview to fill specs, and execute pending specs through the spec-driven, hexagonal, stateful workflow.",
+  "author": { "name": "danielemiliogarcia" }
+}
