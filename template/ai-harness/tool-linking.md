@@ -24,7 +24,7 @@ is to point the tool at `ai-harness/START-HERE.md`.
           AGENTS.md ─┐
           CLAUDE.md ─┤
  copilot-instructions ┤──►  "Read ai-harness/START-HERE.md and follow it."  ──►  ai-harness/
-          PI.md ─────┤
+          (Pi reads AGENTS.md) ┤
         (others) ────┘
 ```
 
@@ -74,7 +74,7 @@ support for any specific tool.
 | GitHub Copilot | `.github/copilot-instructions.md` | Repo-wide custom instructions |
 | Codex | `AGENTS.md` (or a tool-specific path) | Prefers the shared `AGENTS.md` convention |
 | Gemini CLI | `GEMINI.md` | Project context file |
-| Pi | `PI.md` (or tool-specific) | Check the tool's docs |
+| Pi | `AGENTS.md` or `CLAUDE.md` | Pi loads context files from global, parent, and current directories |
 | OpenCode | tool-specific | Check the tool's docs |
 | Aider | `CONVENTIONS.md` (added as read-only context) | You point Aider at it explicitly |
 | Cursor | `.cursorrules` (or project rules) | Check the tool's docs |
@@ -130,14 +130,16 @@ Read `ai-harness/START-HERE.md` first and follow it.
 The active feature/task is in `ai-harness/specs/<your-feature>/state.md`.
 ```
 
-### `PI.md`
+### Pi
 
 ```markdown
-# Pi Agent Rules
+# Agent Instructions
 
-Initialize every session by reading `ai-harness/START-HERE.md`.
-Adopt the role for the current phase (`ai-harness/roles.md`), and keep task state
-in your feature's `ai-harness/specs/<your-feature>/state.md`, updated before stopping.
+This repository uses a tool-agnostic AI harness.
+**Start by reading `ai-harness/START-HERE.md` and follow its boot sequence.**
+You work one feature per branch; current work lives in
+`ai-harness/specs/<your-feature>/state.md`.
+Keep this file thin; the harness is the single source of truth.
 ```
 
 ### `CONVENTIONS.md` (Aider — point Aider at it)

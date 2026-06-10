@@ -1,0 +1,22 @@
+{
+  "name": "sth-harness",
+  "version": "0.1.0",
+  "description": "Install and drive the model-agnostic ai-harness from Claude Code, Codex, or Pi.",
+  "license": "MIT",
+  "keywords": [
+    "pi-package",
+    "pi",
+    "ai-harness",
+    "claude-code",
+    "codex",
+    "spec-driven"
+  ],
+  "pi": {
+    "skills": [
+      "./skills"
+    ],
+    "prompts": [
+      "./prompts"
+    ]
+  }
+}

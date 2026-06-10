@@ -1,12 +1,12 @@
 ---
 name: sth-harness
-description: Codex entry point for installing ai-harness, adding feature specs, and executing the next pending spec without Claude slash commands.
+description: Codex and Pi entry point for installing ai-harness, adding feature specs, and executing the next pending spec without Claude slash commands.
 ---
 
 # sth-harness
 
-Use this skill when the user asks Codex to initialize the ai-harness, add a new
-feature spec, or execute the next pending spec.
+Use this skill when the user asks Codex or Pi to initialize the ai-harness, add a
+new feature spec, or execute the next pending spec.
 
 ## Resolve bundled files
 
@@ -15,7 +15,7 @@ feature spec, or execute the next pending spec.
 - Bundled scripts live under `../../scripts/` from this skill directory.
 - The bundled harness template lives under `../../template/ai-harness/`.
 - In Claude Code, `CLAUDE_PLUGIN_ROOT` may also point at the plugin root, but
-  do not require it in Codex.
+  do not require it in Codex or Pi.
 
 ## Intent routing
 
@@ -46,7 +46,8 @@ feature. Use the `harness-interview` skill for all question-asking.
    bundled `scripts/seed-readme.sh` only when no README exists. Replace every
    `<!-- CUSTOMIZE -->`; link, do not duplicate.
 3. Wire the user's AI tool to the harness using the `harness-tool-linking` skill.
-   For Codex, run the bundled `scripts/link-codex.sh` so Codex reads
+   For Codex, run the bundled `scripts/link-codex.sh`; for Pi, run the bundled
+   `scripts/link-pi.sh`. Both write `AGENTS.md` so the tool reads
    `AGENTS.md` -> `ai-harness/START-HERE.md`.
 4. Create the first feature:
    - Read `./ai-harness/specs/global-spec-info.md` and

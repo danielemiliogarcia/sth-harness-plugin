@@ -1,8 +1,8 @@
 # sth-harness
 
-A Claude Code and Codex plugin that installs and drives the model-agnostic
-**ai-harness** (spec-driven, hexagonal, stateful, resumable development in
-folders + Markdown).
+A Claude Code, Codex, and Pi package that installs and drives the
+model-agnostic **ai-harness** (spec-driven, hexagonal, stateful, resumable
+development in folders + Markdown).
 
 ## Commands
 Claude Code exposes slash commands:
@@ -21,11 +21,19 @@ Codex exposes the `sth-harness` skill instead of slash commands. Ask Codex to:
 - "Add a new ai-harness spec for <feature>."
 - "Execute the next pending ai-harness spec."
 
+Pi exposes prompt templates:
+
+- `/sth-harness-init [feature-name]`
+- `/sth-harness-add-spec [feature-name]`
+- `/sth-harness-execute-next-spec`
+
 ## What it ships
 - `template/ai-harness/` — the harness payload, copied verbatim on `init`.
 - `scripts/copy-harness.sh` — deterministic, no-clobber install.
 - `scripts/link-codex.sh` — idempotent `AGENTS.md` wiring for Codex.
-- `skills/` — the interview and execution logic the commands and Codex skill rely on.
+- `scripts/link-pi.sh` — idempotent `AGENTS.md` wiring for Pi.
+- `skills/` — the interview and execution logic the commands and skills rely on.
+- `prompts/` — Pi prompt templates for the three harness workflows.
 
 The copied folder is always named `ai-harness/`; this plugin is `sth-harness`.
 
@@ -36,6 +44,15 @@ then run `/sth-harness:init` in a target repo.
 For Codex, install this directory as a local plugin. Codex reads
 `.codex-plugin/plugin.json`, loads the bundled `skills/`, and exposes the
 `sth-harness` skill.
+
+For Pi, install this directory as a local package:
+
+```bash
+pi install /path/to/sth-harness-plugin
+```
+
+Pi reads `package.json`, loads the bundled `skills/` and `prompts/`, and exposes
+the namespaced prompt templates above.
 
 ## Maintaining the bundled payload
 `template/ai-harness/` is a **version-pinned snapshot** of the canonical

@@ -1,6 +1,6 @@
 ---
 name: harness-tool-linking
-description: Detect which AI tool the user runs and write the matching ai-harness adapter file(s). Claude Code and Codex are fully automated; other tools are recognized and given a manual snippet. Used by /sth-harness:init and the Codex sth-harness skill.
+description: Detect which AI tool the user runs and write the matching ai-harness adapter file(s). Claude Code, Codex, and Pi are fully automated; other tools are recognized and given a manual snippet. Used by /sth-harness:init and the Codex/Pi sth-harness skill.
 ---
 
 # Harness Tool Linking
@@ -13,6 +13,7 @@ Wire the user's AI tool to the installed harness so the tool bootstraps from
   **Claude Code** and ask the user to confirm or pick another.
 - If running from Codex, propose **Codex** and ask the user to confirm or pick
   another.
+- If running from Pi, propose **Pi** and ask the user to confirm or pick another.
 - If there is no signal, ask the user to choose from: Claude Code, Codex,
   GitHub Copilot, Gemini CLI, Pi, Aider, Other.
 
@@ -41,11 +42,19 @@ per-file action (`created | appended | skipped`). End state: Codex reads
 `AGENTS.md` -> bootstraps `ai-harness/START-HERE.md`. The script is idempotent
 and never clobbers existing content.
 
-### GitHub Copilot / Gemini CLI / Pi / Aider (recognized, not yet automated)
+### Pi (fully automated)
+Run the bundled wiring script:
+`scripts/link-pi.sh "$PWD"`
+In Pi, resolve the script relative to the loaded package skill path. Report its
+per-file action (`created | appended | skipped`). End state: Pi reads
+`AGENTS.md` -> bootstraps `ai-harness/START-HERE.md`. The script is idempotent
+and never clobbers existing content.
+
+### GitHub Copilot / Gemini CLI / Aider (recognized, not yet automated)
 Auto-wiring for these is a planned extension. For now:
 1. Tell the user which adapter file their tool reads (from `tool-linking.md`):
-   Copilot -> `.github/copilot-instructions.md`; Gemini -> `GEMINI.md`; Pi ->
-   `PI.md`; Aider -> `CONVENTIONS.md`.
+   Copilot -> `.github/copilot-instructions.md`; Gemini -> `GEMINI.md`; Aider
+   -> `CONVENTIONS.md`.
 2. Print the matching snippet from `ai-harness/tool-linking.md`.
 3. Tell them to create that file with the snippet; note auto-wiring is coming.
 Do NOT write the file automatically.
