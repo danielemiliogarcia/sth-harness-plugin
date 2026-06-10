@@ -1,12 +1,6 @@
 # Roles
 
-A **role** is a hat an agent wears for one phase of the lifecycle. The same AI
-(or human) wears different hats at different times. Each role says *what to
-read*, *what to produce*, and *when to hand off*. You do not read every role —
-just the one matching the current phase (named in your feature's `state.md`).
-
-All roles are in this one file to keep the harness compact and to make handoffs
-visible. Jump to the one you need.
+**Role** = hat worn for one phase. Same AI (or human) wears different hats at different times. Each role says *what to read*, *what to produce*, *when to hand off*. Don't read every role — just the one matching current phase (named in feature's `state.md`).
 
 | Phase | Role | Section |
 |-------|------|---------|
@@ -17,219 +11,145 @@ visible. Jump to the one you need.
 | implementation | Implementer | [↓](#implementer) |
 | review | Reviewer | [↓](#reviewer) |
 
-**How handoff works:** roles hand off through *files, not memory*. When a role
-finishes, it writes its artifact and updates the feature's `state.md` (phase,
-last step, next action, task states). The next role reads it, opens only what it
-needs, and proceeds. A handoff and a fresh-session resume are the same operation.
-
-> All paths below are relative to a feature folder, e.g.
-> `specs/<feature>/state.md` and `specs/<feature>/spec.md`. You write only your
-> own feature folder (see [`parallel-work.md`](parallel-work.md)).
+Handoff: role finishes → writes artifact + updates `state.md`. Next role reads it, opens only what it needs. All paths relative to `specs/<feature>/`. Write only your own feature folder.
 
 ---
 
 ## Session Loader
 
-**Purpose:** orient a fresh session with the *minimum* context, then switch to
-the role matching the current phase. This is the first hat in any new session.
-You are optimizing for two things at once: **enough context to act correctly**
-and **as little reading as possible**.
+**Purpose:** orient fresh session with minimum context, then switch to role matching current phase.
 
 **Read (in order, stop early):**
 
-1. [`START-HERE.md`](START-HERE.md) — the boot sequence (if not already read).
-2. Identify your feature (branch / worktree name, the human's instruction, or
-   `ls specs/`).
+1. [`START-HERE.md`](START-HERE.md) — boot sequence (if not already read).
+2. Identify feature (branch/worktree name, human's instruction, or `ls specs/`).
 3. `specs/<feature>/state.md` — phase, next action, read budget, task table.
-4. Only then, if the next action needs it, the relevant section of
-   `specs/<feature>/spec.md`.
+4. Only if next action needs it: relevant section of `specs/<feature>/spec.md`.
 
-**Stop.** You now know the phase and the next action. Do not open other features
-or the whole `context/` folder. Trust the `state.md` read budget about what to
-skip.
+**Stop.** Now know phase and next action. Don't open other features or whole `context/`. Trust `state.md` read budget.
 
-**Produce:** nothing yet — a clear mental model ("we are in phase X on feature Y;
-the next action is Z; the files I need are …"), then adopt the matching role.
+**Produce:** nothing yet — clear mental model ("phase X, feature Y, next action Z, files needed are …"), then adopt matching role.
 
 **Edge cases:**
 
-- **A task is `blocked`.** Read its blocker. Clear it if you can; otherwise
-  surface it and pick the next unblocked task or ask the human.
-- **`state.md` points to a missing file.** Treat as a small bug: locate it,
-  repair the pointer, note the fix.
-- **No feature for your branch / no features at all.** Switch to **Planner**;
-  shape or create the feature (copy `specs/_template/`).
+- **Task is `blocked`.** Read blocker. Clear if possible; otherwise surface it, pick next unblocked task or ask human.
+- **`state.md` points to missing file.** Small bug: locate it, repair pointer, note fix.
+- **No feature for branch / no features at all.** Switch to **Planner**; shape or create feature (copy `specs/_template/`).
 
 ---
 
 ## Planner
 
-**Purpose:** keep work flowing. The Planner decides *what to do next*, turns
-ideas into features, breaks features into stateful tasks, and closes work when it
-is done. It directs; it does not write production code or detailed specs.
+**Purpose:** keep work flowing. Decides next step, turns ideas into features, breaks features into tasks, closes done work. No production code.
 
-Serves the **idea**, **tasks**, and **done** phases.
+Serves **idea**, **tasks**, and **done** phases.
 
-**Read:** the feature's `state.md`,
-[`specs/global-state-info.md`](specs/global-state-info.md) for the task-line
-format + legal states, and the spec's design when breaking work down.
+**Read:** feature's `state.md`, [`specs/global-state-info.md`](specs/global-state-info.md) for task-line format + legal states, spec's design when breaking work down.
 
 **Produce, by phase:**
 
-- **idea → feature:** a new `specs/<feature>/` folder (copy of `_template/`),
-  with a one-paragraph intent in `spec.md` and `state.md` initialized (phase =
-  `requirements`). Ideally on a dedicated feature branch.
-- **feature → tasks:** populate the Tasks table in the feature's `state.md`, each
-  task with an ID (`T-1`, … scoped to this feature), state `todo`, and the
-  requirements + acceptance tests it satisfies.
-- **done:** mark tasks `done` in `state.md`, set the feature's overall state to
-  `done`, and (if a choice was cross-cutting) record a `decisions/` ADR.
+- **idea → feature:** new `specs/<feature>/` folder (copy of `_template/`), one-paragraph intent in `spec.md`, `state.md` initialized (phase = `requirements`). On dedicated feature branch.
+- **feature → tasks:** populate Tasks table in feature's `state.md`, each task with ID (`T-1`, … scoped to feature), state `todo`, and requirements + acceptance tests it satisfies.
+- **done:** mark tasks `done` in `state.md`, set feature's overall state to `done`, record cross-cutting `decisions/` ADR if needed.
 
-**How to break a feature into tasks:** walk the spec's Design from the outside in
-(driving adapter → use case → domain → driven adapter/port); each slice is
-usually one or two tasks. Give each a stable per-feature ID, observable
-done-criteria, the requirement/validation IDs it serves, and a short "context
-needed" list. Order so each task is independently testable — prefer a thin
-vertical slice that proves the path end to end before broadening. If a task
-cannot be tested first, mark it and record the deferred-validation plan.
+**Break feature into tasks:** walk spec's Design outside-in (driving adapter → use case → domain → driven adapter/port); each slice ~1-2 tasks. Each task: stable per-feature ID, observable done-criteria, cited REQ/AT IDs. Order for independent testability — thin vertical slice first. If not testable first, mark it and record deferred-validation plan.
 
-**Prioritize, in order:** (1) unblock or cancel a `blocked` task; (2) finish a
-`review` task (cheap, high closure value); (3) the smallest `todo` that proves
-the riskiest assumption. Record the choice and reasoning in `state.md` so the
-next session inherits the rationale, not just the result.
+**Prioritize:** (1) unblock/cancel `blocked`; (2) close `review` (cheap); (3) smallest `todo` proving riskiest assumption. Record reasoning in `state.md`.
 
 **Checklist:**
 
-- [ ] Anything `blocked`? Clear or cancel it first.
-- [ ] Anything in `review`? Get it confirmed and closed.
-- [ ] Does each new task cite requirements + validation?
-- [ ] Is `state.md`'s "Next action" the genuine next step?
+- [ ] Anything `blocked`? Clear or cancel first.
+- [ ] Anything in `review`? Confirm and close.
+- [ ] Each new task cites requirements + validation?
+- [ ] `state.md` "Next action" is genuine next step?
 
 ---
 
 ## Spec Author
 
-**Purpose:** define *what* to build and *why* (requirements), then *how* it will
-be built (design) in hexagonal terms. Writes the documents the rest of the
-lifecycle depends on. No production code in this role.
+**Purpose:** define what/why (requirements) and how (hexagonal design). No production code.
 
-Serves the **requirements** and **design** phases.
+Serves **requirements** and **design** phases.
 
-**Read:** [`specs/global-spec-info.md`](specs/global-spec-info.md) for the spec
-structure + ID rules, the feature's `spec.md` (current draft),
-[`context/project.md`](context/project.md) for domain and goals, and — for the
-design phase — [`context/architecture.md`](context/architecture.md). Cite any
-constraint already fixed in [`decisions/`](decisions/README.md).
+**Read:** [`specs/global-spec-info.md`](specs/global-spec-info.md) for spec structure + ID rules, feature's `spec.md` (current draft), [`context/project.md`](context/project.md) for domain and goals, — for design phase — [`context/architecture.md`](context/architecture.md). Cite constraints already fixed in [`decisions/`](decisions/README.md).
 
 **Produce — `spec.md` § Requirements:**
 
-- A clear **problem statement** and the **value / why**.
-- **Functional requirements**, each with a per-feature ID (`REQ-1`, …), written
-  to be testable (observable behavior, not implementation).
+- Clear **problem statement** and **value/why**.
+- **Functional requirements**, each with per-feature ID (`REQ-1`, …), written as testable observable behavior, not implementation.
 - **Non-functional requirements** that matter.
-- Explicit **in-scope / out-of-scope**, **assumptions**, and **open questions**
-  (list them — never silently assume).
-- Hand off to the **Tester** to turn requirements into acceptance tests *before*
-  design hardens, when practical.
+- Explicit **in-scope/out-of-scope**, **assumptions**, **open questions** (list them — never silently assume).
+- Hand off to **Tester** to turn requirements into acceptance tests *before* design hardens, when practical.
 
 **Produce — `spec.md` § Design (hexagonal):**
 
-- The **domain model** (entities, value objects, invariants) — pure, no IO.
-- The **ports** the feature needs (named for capability, not technology).
-- The **adapters** that implement them and the **use cases** that orchestrate.
-- The **dependency direction** (everything points inward toward the domain).
-- New ports / terms / conventions go in the spec's **Feature-local conventions**
-  block, not in shared `context/*` (keeps parallel branches conflict-free).
-- **Trade-offs considered**; link a `decisions/` ADR for anything cross-cutting.
-- Enough detail for the Planner to cut tasks and the Implementer to build — no
-  speculative design for requirements that do not exist.
+- **Domain model** (entities, value objects, invariants) — pure, no IO.
+- **Ports** feature needs (named for capability, not technology).
+- **Adapters** that implement them and **use cases** that orchestrate.
+- **Dependency direction** (everything points inward toward domain).
+- New ports/terms/conventions go in spec's **Feature-local conventions** block, not in shared `context/*` (keeps parallel branches conflict-free).
+- **Trade-offs considered**; link `decisions/` ADR for anything cross-cutting.
+- Enough detail for Planner to cut tasks and Implementer to build — no speculative design for nonexistent requirements.
 
 **Checklist:**
 
-- [ ] Every requirement has an ID and is testable.
-- [ ] Scope (in/out), assumptions, and open questions are explicit.
-- [ ] Design names domain, ports, adapters, and use cases distinctly.
-- [ ] Dependency direction points inward to the domain.
+- [ ] Every requirement has ID and is testable.
+- [ ] Scope (in/out), assumptions, open questions explicit.
+- [ ] Design names domain, ports, adapters, use cases distinctly.
+- [ ] Dependency direction points inward to domain.
 - [ ] `state.md` updated: phase, last step, next action.
 
 ---
 
 ## Tester
 
-**Purpose:** define how each requirement will be *proven*, ideally before
-implementation. Turns requirements into acceptance tests, or — when test-first is
-impractical — into an explicit, scheduled deferred-validation plan. No silent
-gaps.
+**Purpose:** define how each requirement will be proven before implementation. Acceptance tests or explicit deferred-validation plan. No silent gaps.
 
-Serves the **validation** phase. See [`context/testing.md`](context/testing.md).
+Serves **validation** phase. See [`context/testing.md`](context/testing.md).
 
-**Read:** the spec's requirements,
-[`specs/global-spec-info.md`](specs/global-spec-info.md) for how acceptance /
-`DV` entries are written, and [`context/testing.md`](context/testing.md).
+**Read:** spec's requirements, [`specs/global-spec-info.md`](specs/global-spec-info.md) for how acceptance/`DV` entries are written, [`context/testing.md`](context/testing.md).
 
 **Produce — in `spec.md` § Acceptance & Validation:**
 
-- One **acceptance test** per requirement (or several), written as
-  **Given / When / Then**, each citing the requirement(s) it covers
-  (`AT-3 covers REQ-2`) and its level (unit / integration / e2e). Mark tests
-  meant to be written **first (red)** to drive TDD.
-- For anything not testable first, a **deferred-validation block** (`DV-1`): the
-  **reason**, the **interim/manual check** to run before `review`, the **future
-  automated path**, and a **follow-up task** (added to the feature's task table).
-- A **coverage map**: every requirement maps to at least one `AT-*` or `DV-*`. A
-  requirement with no row is a gap.
+- One **acceptance test** per requirement (or several), written as **Given/When/Then**, each citing requirements it covers (`AT-3 covers REQ-2`) and level (unit/integration/e2e). Mark tests meant to be written **first (red)** to drive TDD.
+- For anything not testable first, **deferred-validation block** (`DV-1`): **reason**, **interim/manual check** to run before `review`, **future automated path**, **follow-up task** (added to feature's task table).
+- **Coverage map**: every requirement maps to at least one `AT-*` or `DV-*`. Requirement with no row is a gap.
 
 **Checklist:**
 
-- [ ] Every requirement maps to an `AT-*` or a `DV-*` (no gaps).
-- [ ] Tests are behavior-focused and use Given/When/Then.
+- [ ] Every requirement maps to `AT-*` or `DV-*` (no gaps).
+- [ ] Tests behavior-focused, use Given/When/Then.
 - [ ] Each deferral records reason + interim check + future path + follow-up task.
 
 ---
 
 ## Implementer
 
-**Purpose:** build the feature, guided by the design and proven by the tests.
-Write the smallest correct code that satisfies the current task, keep the domain
-pure, and keep state honest.
+**Purpose:** build feature. Smallest correct code satisfying current task, domain pure, state honest.
 
-Serves the **implementation** phase.
+Serves **implementation** phase.
 
-**Read:** the **active task** in the feature's `state.md` (task states + line
-format in [`specs/global-state-info.md`](specs/global-state-info.md)), the
-relevant **slice** of the spec's design (not the whole thing), the cited
-acceptance tests, and [`context/architecture.md`](context/architecture.md). Read
-only the slice the task touches.
+**Read:** **active task** in feature's `state.md` (task states + line format in [`specs/global-state-info.md`](specs/global-state-info.md)), relevant **slice** of spec's design (not whole thing), cited acceptance tests, [`context/architecture.md`](context/architecture.md). Read only slice the task touches.
 
 **The loop (TDD preferred):**
 
-1. Set the task to `doing` in `state.md`.
-2. Pick the next acceptance/unit test the task must satisfy; write it so it
-   **fails** (red) if it does not exist yet.
-3. Implement the **smallest** change that makes it pass (green).
-4. Refactor with tests green; remove duplication; keep the domain clean.
-5. Repeat until the done-criteria are met, then move the task to `review`.
+1. Set task to `doing` in `state.md`.
+2. Pick next acceptance/unit test task must satisfy; write it so it **fails** (red) if not yet written.
+3. Implement **smallest** change that makes it pass (green).
+4. Refactor with tests green; remove duplication; keep domain clean.
+5. Repeat until done-criteria met, then move task to `review`.
 
-If TDD is impractical, follow the deferred-validation plan: implement, run the
-documented manual check, and confirm the follow-up test task exists. **Never
-silently skip validation.**
+If TDD impractical, follow deferred-validation plan: implement, run documented manual check, confirm follow-up test task exists. **Never silently skip validation.**
 
-**Hexagonal discipline while coding:** domain code imports nothing external
-(no DB driver, HTTP client, framework, filesystem, clock, env). Need something
-outside? Call a **port**; implement it in an **adapter** at the edge. Use cases
-orchestrate only. Quick self-check: *could I unit-test this domain logic with no
-mocks of the outside world?* If not, infrastructure has leaked inward.
+**Hexagonal discipline while coding:** domain code imports nothing external (no DB driver, HTTP client, framework, filesystem, clock, env). Need something outside? Call **port**; implement in **adapter** at edge. Use cases orchestrate only. Quick self-check: *could I unit-test this domain logic with no mocks of outside world?* If not, infrastructure leaked inward.
 
-**Keep state honest:** update the task state as you go; if you discover new work,
-add a task to *this feature's* table (or note it for a future feature) rather
-than expanding the current task silently; record cross-cutting technical choices
-as a `decisions/` ADR.
+**Keep state honest:** update task state as you go; if new work discovered, add task to *this feature's* table (or note for future feature) rather than silently expanding current task; record cross-cutting technical choices as `decisions/` ADR.
 
 **Checklist:**
 
 - [ ] Task set to `doing` at start.
-- [ ] Tests drove the change (or the deferral plan was followed).
-- [ ] Domain stays free of infrastructure imports; external access via port + adapter.
+- [ ] Tests drove change (or deferral plan followed).
+- [ ] Domain free of infrastructure imports; external access via port + adapter.
 - [ ] Done-criteria met; tests green (or manual validation run).
 - [ ] New discoveries captured as tasks, not smuggled into this task.
 - [ ] Task moved to `review`; `state.md` updated.
@@ -238,32 +158,24 @@ as a `decisions/` ADR.
 
 ## Reviewer
 
-**Purpose:** verify a task against its requirements and validation before it is
-called `done`. The Reviewer confirms coverage and architectural integrity, not
-personal taste.
+**Purpose:** verify task against requirements and validation before `done`. Coverage and architectural integrity — not personal taste.
 
-Serves the **review** phase.
+Serves **review** phase.
 
-**Read:** the spec's Requirements + Acceptance & Validation sections for the
-task, and the changed code.
+**Read:** spec's Requirements + Acceptance & Validation sections for task, and changed code.
 
 **Check:**
 
-- **Requirements coverage** — does the work satisfy every cited `REQ-*`?
-- **Validation evidence** — do the cited `AT-*` pass, or has the `DV-*` interim
-  check been run and the follow-up task created?
-- **Hexagonal boundaries** — domain free of infrastructure; external access via
-  ports/adapters; use cases hold no business rules. (See the self-check in
-  [`context/architecture.md`](context/architecture.md).)
-- **State hygiene** — the feature's `state.md` is consistent and resumable.
+- **Requirements coverage** — does work satisfy every cited `REQ-*`?
+- **Validation evidence** — do cited `AT-*` pass, or has `DV-*` interim check run and follow-up task created?
+- **Hexagonal boundaries** — domain free of infrastructure; external access via ports/adapters; use cases hold no business rules. (See self-check in [`context/architecture.md`](context/architecture.md).)
+- **State hygiene** — feature's `state.md` consistent and resumable.
 
-**Outcome:** on pass, mark the task `done` in `state.md` and hand to the Planner
-to close (set the feature's overall state when all tasks are done). On fail, move
-it back to `doing` with specific, actionable notes.
+**Outcome:** on pass, mark task `done` in `state.md` and hand to Planner to close (set feature's overall state when all tasks done). On fail, move back to `doing` with specific, actionable notes.
 
 **Checklist:**
 
-- [ ] Every cited requirement is satisfied.
-- [ ] Validation passed or the deferral plan is honored.
+- [ ] Every cited requirement satisfied.
+- [ ] Validation passed or deferral plan honored.
 - [ ] Hexagonal boundaries intact.
 - [ ] `state.md` consistent and resumable.

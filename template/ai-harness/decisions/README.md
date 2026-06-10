@@ -1,8 +1,6 @@
 # Decisions (ADRs)
 
-Lightweight **Architecture Decision Records** for **cross-cutting** choices —
-ones that shape the whole project or constrain future work. When future-you will
-ask "why did we do it this way?", record it here as a short, self-contained note.
+Lightweight **Architecture Decision Records** for **cross-cutting** choices — ones that shape whole project or constrain future work. When future-you asks "why did we do it this way?", record it here as short, self-contained note.
 
 ```text
 decisions/
@@ -10,54 +8,36 @@ decisions/
 └── YYYY-MM-DD-<slug>.md         ← one file per decision (date-named, self-sorting)
 ```
 
-A worked example exists:
-[`2026-06-07-adopt-ai-harness.md`](2026-06-07-adopt-ai-harness.md).
+Worked example exists: [`2026-06-07-adopt-ai-harness.md`](2026-06-07-adopt-ai-harness.md).
 
-> **Feature-local choices stay in the feature.** A trade-off that only affects
-> one feature belongs in that feature's `spec.md` § Design, not here. Reserve
-> `decisions/` for genuinely project-wide choices.
+> **Feature-local choices stay in feature.** Trade-off affecting only one feature belongs in that feature's `spec.md` § Design, not here. Reserve `decisions/` for genuinely project-wide choices.
 
----
-
-## Why date-named files and no index
-
-Files are named `YYYY-MM-DD-<slug>.md`, **not** with a global sequential number,
-and there is **no index file**. Both choices are about parallel safety: a global
-counter (`0002-…`) and a shared index are exactly the things two branches collide
-on. A date + slug rarely collides, and the **directory listing, sorted by name,
-is the index**. To browse decisions, list the folder.
-
-(If two branches happen to add the same `YYYY-MM-DD-<slug>.md` on the same day,
-disambiguate one slug — a trivial, rare fix.)
+Files named `YYYY-MM-DD-<slug>.md` — no sequential numbers, no index file. Directory listing sorted by name **is** the index.
 
 ---
 
 ## When to write one
 
-Write an ADR when you:
+Write ADR when you:
 
-- choose an architecture pattern, boundary, or major library;
-- pick one approach over a viable alternative with real trade-offs;
-- adopt a convention everyone must follow;
-- make a choice you might otherwise re-litigate later.
+- choose architecture pattern, boundary, or major library;
+- pick one approach over viable alternative with real trade-offs;
+- adopt convention everyone must follow;
+- make choice you might otherwise re-litigate later.
 
-Do **not** write one for trivial or easily-reversed choices — keep signal high.
+**Don't** write one for trivial or easily-reversed choices — keep signal high.
 
 ## How to write one
 
 1. Create `YYYY-MM-DD-<short-slug>.md` (today's date).
-2. Use the format below. Keep it to roughly one screen.
+2. Use format below. Keep to roughly one screen.
 3. Set status to `accepted` (or `proposed` if still under discussion).
-4. Link it from the relevant `spec.md` § Design or
-   [`../context/architecture.md`](../context/architecture.md) so it is
-   discoverable in context.
+4. Link from relevant `spec.md` § Design or [`../context/architecture.md`](../context/architecture.md) so it's discoverable.
 
 ## Rules
 
-- **Immutable.** Do not rewrite history. To change a decision, write a **new**
-  ADR and set the old one's status to `superseded by <new-file>`.
-- **Self-contained.** A reader should understand the decision without chasing
-  links, though links help.
+- **Immutable.** Don't rewrite history. To change decision, write **new** ADR and set old one's status to `superseded by <new-file>`.
+- **Self-contained.** Reader should understand decision without chasing links, though links help.
 
 ## Format
 

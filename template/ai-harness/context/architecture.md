@@ -1,9 +1,6 @@
 # Architecture — Hexagonal (Ports & Adapters)
 
-The harness assumes a **hexagonal** layout so the domain stays pure, testable,
-and independent of frameworks and infrastructure. This file is the practical
-rulebook: the Spec Author designs with it, the Implementer builds with it, the
-Reviewer checks against it. Keep it open during design and implementation.
+Harness assumes **hexagonal** layout so domain stays pure, testable, independent of frameworks and infrastructure. Practical rulebook: Spec Author designs with it, Implementer builds with it, Reviewer checks against it.
 
 ---
 
@@ -25,17 +22,12 @@ Reviewer checks against it. Keep it open during design and implementation.
         dependencies point inward → toward the Domain
 ```
 
-- **Domain** — entities, value objects, domain services, and the business rules
-  binding them. Pure. No imports of frameworks, IO, DB, HTTP, time, or env.
-- **Port** — an interface *owned by the application*, describing something it
-  needs from outside, in the application's own language. Examples:
-  `OrderRepository`, `PaymentGateway`, `Clock`, `EventPublisher`.
-- **Adapter** — a concrete implementation at the edge.
-  - **Driven adapter** implements a port using real tech (`SqlOrderRepository`).
-  - **Driving adapter** calls the application from outside
-    (`HttpOrderController`, `CliHandler`).
-- **Use case / application service** — orchestrates domain objects and ports to
-  fulfil one request. Holds no business rules and no infrastructure detail.
+- **Domain** — entities, value objects, domain services, business rules. Pure. No imports of frameworks, IO, DB, HTTP, time, or env.
+- **Port** — interface *owned by application*, describing something it needs from outside, in application's language. Examples: `OrderRepository`, `PaymentGateway`, `Clock`, `EventPublisher`.
+- **Adapter** — concrete implementation at edge.
+  - **Driven adapter** implements port using real tech (`SqlOrderRepository`).
+  - **Driving adapter** calls application from outside (`HttpOrderController`, `CliHandler`).
+- **Use case / application service** — orchestrates domain objects and ports to fulfil one request. Holds no business rules and no infrastructure detail.
 
 ---
 
@@ -47,41 +39,29 @@ Driving adapter ──► Use case ──► Domain
                        └──► Port (interface)  ◄── implemented by ── Driven adapter
 ```
 
-- Compile-time dependencies point **inward** (toward the domain) — except
-  adapters, which depend on the ports they implement.
-- The domain depends on **nothing** in the outer rings.
-- The application depends on the **domain** and on **its own port interfaces**,
-  never on concrete adapters.
-- Adapters are wired to the application at the **composition root** (startup),
-  via dependency injection.
-
-Why this helps an AI agent: the dependency rule is a single, checkable
-constraint. It stops generated code from smuggling database or HTTP concerns into
-business logic, and it makes the domain trivially unit-testable without mocking
-the whole world.
+- Compile-time dependencies point **inward** (toward domain) — except adapters, which depend on ports they implement.
+- Domain depends on **nothing** in outer rings.
+- Application depends on **domain** and **its own port interfaces**, never on concrete adapters.
+- Adapters wired to application at **composition root** (startup), via dependency injection.
 
 ---
 
 ## Do
 
-- Put business rules and invariants **in the domain** (e.g. "an order needs at
-  least one item" lives on the `Order` entity, not in a controller).
-- Express external needs as **ports** in the application's language.
-- Implement ports in **adapters** at the edge.
-- Inject adapters into use cases from the **composition root**.
-- Pass **time, randomness, and IO** through ports (`Clock`, `IdGenerator`,
-  `Repository`) so the domain stays deterministic.
+- Put business rules and invariants **in domain** (e.g. "order needs at least one item" lives on `Order` entity, not in controller).
+- Express external needs as **ports** in application's language.
+- Implement ports in **adapters** at edge.
+- Inject adapters into use cases from **composition root**.
+- Pass **time, randomness, and IO** through ports (`Clock`, `IdGenerator`, `Repository`) so domain stays deterministic.
 - Keep use cases thin: validate input shape, call domain, call ports, return.
 
 ## Don't
 
-- ❌ Import a database/ORM, HTTP client, framework, filesystem, or `now()` inside
-  the domain.
-- ❌ Put business rules inside an adapter or controller.
-- ❌ Let a use case depend on a concrete adapter class.
-- ❌ Leak transport/persistence shapes (DTOs, ORM rows, JSON) into the domain;
-  translate at the adapter boundary.
-- ❌ Reach for the network or clock directly "just this once" — add a port.
+- ❌ Import database/ORM, HTTP client, framework, filesystem, or `now()` inside domain.
+- ❌ Put business rules inside adapter or controller.
+- ❌ Let use case depend on concrete adapter class.
+- ❌ Leak transport/persistence shapes (DTOs, ORM rows, JSON) into domain; translate at adapter boundary.
+- ❌ Reach for network or clock directly "just this once" — add port.
 
 ---
 
@@ -119,48 +99,32 @@ submitOrder = SubmitOrder(repo, clock)
 http = HttpOrderController(submitOrder)
 ```
 
-The domain (`Order`) unit-tests with no database and no HTTP. The use case tests
-with in-memory fakes of `OrderRepository` and `Clock`. The adapters get
-integration tests at the edge.
+Domain (`Order`) unit-tests with no database and no HTTP. Use case tests with in-memory fakes of `OrderRepository` and `Clock`. Adapters get integration tests at edge.
 
 ---
 
 ## Naming conventions
 
-- Name **ports** for the capability, not the technology (`OrderRepository`, not
-  `PostgresClient`).
-- Name **adapters** for the technology + capability (`SqlOrderRepository`,
-  `HttpOrderController`).
-- Translate external shapes to domain types **at the adapter boundary**, never
-  deep inside.
+- Name **ports** for capability, not technology (`OrderRepository`, not `PostgresClient`).
+- Name **adapters** for technology + capability (`SqlOrderRepository`, `HttpOrderController`).
+- Translate external shapes to domain types **at adapter boundary**, never deep inside.
 
 ---
 
 ## Self-check (use during review)
 
-- Could I unit-test the domain logic **without any mocks** of DB/HTTP/time? If
-  not, infrastructure has leaked inward.
-- Does any domain file import something from `adapters/` or a framework? That is
-  a violation.
-- Does a use case reference a concrete adapter instead of a port? Introduce and
-  inject the port.
-- Are transport/persistence shapes translated at the boundary, not passed inward?
+- Could I unit-test domain logic **without any mocks** of DB/HTTP/time? If not, infrastructure leaked inward.
+- Does any domain file import from `adapters/` or a framework? Violation.
+- Does use case reference concrete adapter instead of port? Introduce and inject port.
+- Are transport/persistence shapes translated at boundary, not passed inward?
 
 ---
 
 ## Project-specific bindings
 
-> `<!-- CUSTOMIZE -->` Record decisions that shape the whole system (module
-> layout for `src/`, DI/wiring, error-handling and transaction boundaries), and
-> list the real ports and their adapters as they appear so agents reuse them
-> instead of inventing new ones. Link significant choices to a
-> [`../decisions/`](../decisions/README.md) record.
+> `<!-- CUSTOMIZE -->` Record decisions shaping whole system (module layout for `src/`, DI/wiring, error-handling and transaction boundaries), and list real ports and adapters as they appear so agents reuse them instead of inventing new ones. Link significant choices to [`../decisions/`](../decisions/README.md) record.
 >
-> **Parallel-safety:** this is a *shared* file. While a feature is in flight, put
-> its new ports in that feature's `spec.md`, not here — two feature branches both
-> appending rows would conflict. Promote a port to this project-wide table
-> **deliberately, on the main branch**, after the feature merges. See
-> [`../parallel-work.md`](../parallel-work.md).
+> **Parallel-safety:** shared file. While feature is in flight, put its new ports in that feature's `spec.md`, not here — two feature branches both appending rows would conflict. Promote port to project-wide table **deliberately, on main branch**, after feature merges. See [`../parallel-work.md`](../parallel-work.md).
 
 - Module / folder layout: _…_
 - Dependency injection / wiring: _…_
