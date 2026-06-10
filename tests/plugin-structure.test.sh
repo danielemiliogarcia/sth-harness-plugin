@@ -27,6 +27,8 @@ check "$(jq -r '.pi.prompts[0]' "$ROOT/package.json" 2>/dev/null)" "./prompts" "
 
 # commands
 for c in init add-spec execute-next-spec; do exists "commands/$c.md"; done
+grep -qF 'Before finishing' "$ROOT/commands/init.md" && check yes yes "init checks placeholders before finishing" || check no yes "init checks placeholders before finishing"
+grep -qF 'documentation-only occurrences' "$ROOT/commands/init.md" && check yes yes "init ignores documentation-only CUSTOMIZE mentions" || check no yes "init ignores documentation-only CUSTOMIZE mentions"
 
 # Pi prompt templates
 for p in sth-harness-init sth-harness-add-spec sth-harness-execute-next-spec; do exists "prompts/$p.md"; done

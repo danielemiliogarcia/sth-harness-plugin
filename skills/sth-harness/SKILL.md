@@ -44,7 +44,8 @@ feature. Use the `harness-interview` skill for all question-asking.
    detect and link existing docs, assess whether the README is rich enough,
    interview for gaps, set the app type, and offer to seed a README with the
    bundled `scripts/seed-readme.sh` only when no README exists. Replace every
-   `<!-- CUSTOMIZE -->`; link, do not duplicate.
+   `<!-- CUSTOMIZE -->` in `project.md`, including inline comments in examples;
+   link, do not duplicate.
 3. Wire the user's AI tool to the harness using the `harness-tool-linking` skill.
    For Codex, run the bundled `scripts/link-codex.sh`; for Pi, run the bundled
    `scripts/link-pi.sh`. Both write `AGENTS.md` so the tool reads
@@ -58,7 +59,16 @@ feature. Use the `harness-interview` skill for all question-asking.
    - Copy `ai-harness/specs/_template/` to `ai-harness/specs/<feature>/`.
    - Fill `spec.md` and `state.md` from the answers, using the legal vocabulary
      verbatim. Set `phase`, `overall: todo`, and a concrete `next`.
-5. Report what was created and tell the user they can ask Codex to execute the
+5. Before finishing, re-read every file this init flow created or edited
+   intentionally (`./ai-harness/context/project.md`, the first feature's
+   `spec.md` and `state.md`, root adapter files, and a seeded README if one was
+   created). If any actionable `<!-- CUSTOMIZE -->` placeholder remains, keep
+   interviewing or fill from known facts until it is gone. Do not count
+   documentation-only occurrences that merely explain the marker itself, such as
+   copied harness docs like `ai-harness/README.md`,
+   `ai-harness/context/testing.md`, `ai-harness/context/architecture.md`, or
+   decision records.
+6. Report what was created and tell the user they can ask Codex or Pi to execute the
    next pending spec when ready.
 
 Ask one question at a time. Never invent requirements; ask or record an open

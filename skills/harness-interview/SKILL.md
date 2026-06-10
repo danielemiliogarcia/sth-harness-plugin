@@ -35,8 +35,12 @@ Turn a user's intent into filled harness files by asking ONE question at a time.
    `scripts/seed-readme.sh` (idempotent, never clobbers). In Codex, resolve it
    relative to the loaded plugin skill path; in Claude Code,
    `CLAUDE_PLUGIN_ROOT/scripts/seed-readme.sh` may be available.
-5. Replace every `<!-- CUSTOMIZE -->` you fill; link, don't duplicate — keep
-   `project.md` a small hub.
+5. Replace every `<!-- CUSTOMIZE -->` in `project.md`, including inline comments
+   in examples; link, don't duplicate — keep `project.md` a small hub.
+6. Before returning from project-context filling, re-read `project.md`. If any
+   actionable `<!-- CUSTOMIZE -->` placeholder remains, ask a follow-up or fill
+   it from known facts. Do not treat documentation-only occurrences elsewhere in
+   the harness as project fields.
 
 ## Filling a feature (spec.md + state.md)
 1. Feature name (kebab-case).
