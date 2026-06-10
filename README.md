@@ -4,6 +4,8 @@ A Claude Code, Codex, Pi, GitHub Copilot CLI, and Google Antigravity CLI
 plugin/package that installs and drives the model-agnostic **ai-harness**
 (spec-driven, hexagonal, stateful, resumable development in folders + Markdown).
 
+[ai-harness template](https://github.com/danielemiliogarcia/sth-harness) version is bundled and pinned see [template/VENDOR.md](template/VENDOR.md)
+
 ## Commands
 Claude Code exposes slash commands:
 
