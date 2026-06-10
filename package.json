@@ -1,7 +1,7 @@
 {
   "name": "sth-harness",
   "version": "0.1.0",
-  "description": "Install and drive the model-agnostic ai-harness from Claude Code, Codex, Pi, or GitHub Copilot CLI.",
+  "description": "Install and drive the model-agnostic ai-harness from Claude Code, Codex, Pi, GitHub Copilot CLI, or Google Antigravity CLI.",
   "license": "MIT",
   "keywords": [
     "pi-package",
@@ -10,6 +10,8 @@
     "claude-code",
     "codex",
     "copilot-cli",
+    "antigravity",
+    "agy",
     "spec-driven"
   ],
   "pi": {

@@ -1,8 +1,8 @@
 # sth-harness
 
-A Claude Code, Codex, Pi, and GitHub Copilot CLI plugin/package that installs
-and drives the model-agnostic **ai-harness** (spec-driven, hexagonal, stateful,
-resumable development in folders + Markdown).
+A Claude Code, Codex, Pi, GitHub Copilot CLI, and Google Antigravity CLI
+plugin/package that installs and drives the model-agnostic **ai-harness**
+(spec-driven, hexagonal, stateful, resumable development in folders + Markdown).
 
 ## Commands
 Claude Code exposes slash commands:
@@ -33,12 +33,19 @@ GitHub Copilot CLI exposes the `sth-harness` skill. Ask Copilot CLI to:
 - "Add a new ai-harness spec for <feature>."
 - "Implement the next pending ai-harness spec."
 
+Google Antigravity CLI (`agy`) exposes the `sth-harness` skill. Ask AGY to:
+
+- "Initialize this repo with the ai-harness."
+- "Add a new ai-harness spec for <feature>."
+- "Implement the next pending ai-harness spec."
+
 ## What it ships
 - `template/ai-harness/` — the harness payload, copied verbatim on `init`.
 - `scripts/copy-harness.sh` — deterministic, no-clobber install.
 - `scripts/link-codex.sh` — idempotent `AGENTS.md` wiring for Codex.
 - `scripts/link-pi.sh` — idempotent `AGENTS.md` wiring for Pi.
 - `scripts/link-copilot-cli.sh` — idempotent `AGENTS.md` wiring for Copilot CLI.
+- `scripts/link-agy.sh` — idempotent `AGENTS.md` wiring for Google Antigravity CLI.
 - `skills/` — the interview and implementation logic the commands and skills rely on.
 - `prompts/` — Pi prompt templates for the three harness workflows.
 
@@ -70,6 +77,16 @@ copilot plugin install /path/to/sth-harness-plugin
 Copilot CLI reads `plugin.json` and loads the bundled `skills/`. Direct local
 installs are useful for development; Copilot CLI warns that marketplace installs
 will be the supported path for durable distribution.
+
+For Google Antigravity CLI, install this directory as a local plugin:
+
+```bash
+agy plugin install /path/to/sth-harness-plugin
+```
+
+Antigravity CLI reads `plugin.json`, loads the bundled `skills/`, and converts
+the bundled `commands/` into skills. You can check the package with
+`agy plugin validate /path/to/sth-harness-plugin`.
 
 ## Maintaining the bundled payload
 `template/ai-harness/` is a **version-pinned snapshot** of the canonical

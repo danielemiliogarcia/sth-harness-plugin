@@ -5,8 +5,9 @@ Read this file first. It is tiny on purpose.
 
 This repository uses a **model- and provider-agnostic AI development harness**
 built only from folders and Markdown. It works with any assistant that can read
-files (Claude Code, Codex, Copilot, Pi, OpenCode, Gemini CLI, Aider, or anything
-future). Nothing here depends on a specific model or vendor.
+files (Claude Code, Codex, Copilot, Google Antigravity CLI, Pi, OpenCode,
+Gemini CLI, Aider, or anything future). Nothing here depends on a specific model
+or vendor.
 
 The harness is **parallel-safe by design**: each feature owns all of its mutable
 state inside its own folder, so multiple agents can work on different features in

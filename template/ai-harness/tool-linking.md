@@ -70,6 +70,7 @@ support for any specific tool.
 |------|---------------------------|-------|
 | Many agents (shared convention) | `AGENTS.md` | A growing cross-tool convention; good default |
 | Claude Code | `CLAUDE.md` | Also supports nested `CLAUDE.md` files |
+| Google Antigravity CLI / AGY | `AGENTS.md` | CLI custom instructions |
 | GitHub Copilot CLI | `AGENTS.md` | CLI custom instructions |
 | GitHub Copilot IDE | `.github/copilot-instructions.md` | Repo-wide custom instructions |
 | Codex | `AGENTS.md` (or a tool-specific path) | Prefers the shared `AGENTS.md` convention |
@@ -111,6 +112,18 @@ Update that feature's state.md before ending the session (see START-HERE.md).
 ```
 
 ### GitHub Copilot CLI
+
+```markdown
+# Agent Instructions
+
+This repository uses a tool-agnostic AI harness.
+**Start by reading `ai-harness/START-HERE.md` and follow its boot sequence.**
+You work one feature per branch; current work lives in
+`ai-harness/specs/<your-feature>/state.md`.
+Keep this file thin; the harness is the single source of truth.
+```
+
+### Google Antigravity CLI / AGY
 
 ```markdown
 # Agent Instructions
