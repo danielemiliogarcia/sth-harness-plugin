@@ -9,19 +9,24 @@ pass=0; fail=0
 check(){ if [ "$1" = "$2" ]; then pass=$((pass+1)); else fail=$((fail+1)); echo "FAIL: $3 (got '$1' want '$2')"; fi; }
 exists(){ [ -e "$ROOT/$1" ] && check yes yes "$1 exists" || check no yes "$1 exists"; }
 
-# manifest valid + name; marketplace present
+# Claude manifest valid + name; marketplace present
 check "$(jq -r .name "$ROOT/.claude-plugin/plugin.json" 2>/dev/null)" "sth-harness" "plugin.json name"
 exists ".claude-plugin/marketplace.json"
 check "$(jq -r '.plugins[0].name' "$ROOT/.claude-plugin/marketplace.json" 2>/dev/null)" "sth-harness" "marketplace plugin name"
+
+# Codex manifest valid + skills entry point
+check "$(jq -r .name "$ROOT/.codex-plugin/plugin.json" 2>/dev/null)" "sth-harness" "codex plugin.json name"
+check "$(jq -r .skills "$ROOT/.codex-plugin/plugin.json" 2>/dev/null)" "./skills/" "codex plugin skills path"
+check "$(jq -r '.interface.displayName' "$ROOT/.codex-plugin/plugin.json" 2>/dev/null)" "sth-harness" "codex plugin display name"
 
 # commands
 for c in init add-spec execute-next-spec; do exists "commands/$c.md"; done
 
 # skills the commands reference by name
-for s in harness-interview harness-execute harness-tool-linking; do exists "skills/$s/SKILL.md"; done
+for s in harness-interview harness-execute harness-tool-linking sth-harness; do exists "skills/$s/SKILL.md"; done
 
-# scripts the commands call, executable
-for sc in copy-harness link-claude-code seed-readme; do
+# scripts the commands and skills call, executable
+for sc in copy-harness link-claude-code link-codex seed-readme; do
   exists "scripts/$sc.sh"
   [ -x "$ROOT/scripts/$sc.sh" ] && check yes yes "$sc.sh executable" || check no yes "$sc.sh executable"
 done

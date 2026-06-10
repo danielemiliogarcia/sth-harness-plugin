@@ -1,9 +1,12 @@
 # sth-harness
 
-A Claude Code plugin that installs and drives the model-agnostic **ai-harness**
-(spec-driven, hexagonal, stateful, resumable development in folders + Markdown).
+A Claude Code and Codex plugin that installs and drives the model-agnostic
+**ai-harness** (spec-driven, hexagonal, stateful, resumable development in
+folders + Markdown).
 
 ## Commands
+Claude Code exposes slash commands:
+
 - `/sth-harness:init [feature-name]` — copy the harness into this repo, interview
   to fill `context/project.md`, then create your first feature's `spec.md` +
   `state.md`.
@@ -12,16 +15,27 @@ A Claude Code plugin that installs and drives the model-agnostic **ai-harness**
 - `/sth-harness:execute-next-spec` — pick the next pending spec (you confirm) and
   work it through the harness until blocked, a decision is needed, or it is done.
 
+Codex exposes the `sth-harness` skill instead of slash commands. Ask Codex to:
+
+- "Initialize this repo with the ai-harness."
+- "Add a new ai-harness spec for <feature>."
+- "Execute the next pending ai-harness spec."
+
 ## What it ships
 - `template/ai-harness/` — the harness payload, copied verbatim on `init`.
 - `scripts/copy-harness.sh` — deterministic, no-clobber install.
-- `skills/` — the interview and execution logic the commands rely on.
+- `scripts/link-codex.sh` — idempotent `AGENTS.md` wiring for Codex.
+- `skills/` — the interview and execution logic the commands and Codex skill rely on.
 
 The copied folder is always named `ai-harness/`; this plugin is `sth-harness`.
 
 ## Install (local dev)
-Add this directory as a plugin in Claude Code (plugin marketplace/local path),
+For Claude Code, add this directory as a plugin (plugin marketplace/local path),
 then run `/sth-harness:init` in a target repo.
+
+For Codex, install this directory as a local plugin. Codex reads
+`.codex-plugin/plugin.json`, loads the bundled `skills/`, and exposes the
+`sth-harness` skill.
 
 ## Maintaining the bundled payload
 `template/ai-harness/` is a **version-pinned snapshot** of the canonical

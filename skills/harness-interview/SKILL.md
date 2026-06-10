@@ -1,6 +1,6 @@
 ---
 name: harness-interview
-description: Shared one-question-at-a-time interview logic for filling harness project.md and feature spec/state files. Used by /sth-harness:init and /sth-harness:add-spec.
+description: Shared one-question-at-a-time interview logic for filling harness project.md and feature spec/state files. Used by /sth-harness:init, /sth-harness:add-spec, and the Codex sth-harness skill.
 ---
 
 # Harness Interview
@@ -31,9 +31,10 @@ Turn a user's intent into filled harness files by asking ONE question at a time.
 3. **Set the app-type** (`frontend | backend | fullstack | CLI | library |
    mobile | other`) — ask if it cannot be derived from the docs.
 4. **From-scratch (no README):** fill `project.md` from the interview, then
-   **offer (ask first)** to seed a minimal README:
-   `bash "${CLAUDE_PLUGIN_ROOT}/scripts/seed-readme.sh" "$PWD"` (idempotent,
-   never clobbers).
+   **offer (ask first)** to seed a minimal README with the bundled
+   `scripts/seed-readme.sh` (idempotent, never clobbers). In Codex, resolve it
+   relative to the loaded plugin skill path; in Claude Code,
+   `CLAUDE_PLUGIN_ROOT/scripts/seed-readme.sh` may be available.
 5. Replace every `<!-- CUSTOMIZE -->` you fill; link, don't duplicate — keep
    `project.md` a small hub.
 
@@ -49,4 +50,3 @@ Turn a user's intent into filled harness files by asking ONE question at a time.
 
 ## Validation
 After writing, re-read both files: do they match the bare freeform shape? Do IDs cross-cite correctly? Is the legal vocabulary used verbatim?
-
