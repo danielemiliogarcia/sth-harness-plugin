@@ -1,48 +1,40 @@
 # Tool Linking
 
-This harness is **provider-agnostic**. Nothing inside `ai-harness/` depends on a
-specific AI tool, model, or vendor. Any assistant that can read repository files
-can use it by reading the entry point:
+Harness is **provider-agnostic**. Nothing inside `ai-harness/` depends on specific AI tool, model, or vendor. Any assistant that reads repo files can use it via:
 
 ```text
 ai-harness/START-HERE.md
 ```
 
-This document explains how to *optionally* connect specific tools to the harness
-**without** making the harness depend on them.
+How to *optionally* connect specific tools to harness **without** making harness depend on them.
 
 ---
 
-## The core idea: thin adapters, single source of truth
+## Core idea: thin adapters, single source of truth
 
-Most AI coding tools look for their own well-known instruction file at the
-repository root. Rather than duplicating guidance into each of those files (which
-drifts and rots), you create a **thin adapter**: a tiny root file whose only job
-is to point the tool at `ai-harness/START-HERE.md`.
+Most AI coding tools look for their own instruction file at repo root. Rather than duplicating guidance into each (drifts and rots), create **thin adapter**: tiny root file whose only job is to point tool at `ai-harness/START-HERE.md`.
 
 ```text
-             AGENTS.md ─┐
-             CLAUDE.md ─┤
-copilot-instructions ───┤──►  "Read ai-harness/START-HERE.md and follow it."  ──►  ai-harness/
-             (others) ──┘
+          AGENTS.md ─┐
+          CLAUDE.md ─┤
+ copilot-instructions ┤──►  "Read ai-harness/START-HERE.md and follow it."  ──►  ai-harness/
+          PI.md ─────┤
+        (others) ────┘
 ```
 
-- The harness stays the **single source of truth**.
-- Each tool file is **3–6 lines** and contains no real content of its own.
-- Adding or removing a tool never touches the harness.
+- Harness stays **single source of truth**.
+- Each tool file is **3–6 lines** with no real content of its own.
+- Adding/removing tool never touches harness.
 
-> **These adapter files are NOT created by default.** This harness ships as
-> folders and Markdown inside `ai-harness/` only, to avoid scattering
-> tool-specific files at the repository root. A human creates an adapter **only**
-> for the tool(s) they actually use, by copying a snippet below.
+> **Adapter files NOT created by default.** Harness ships as folders and Markdown inside `ai-harness/` only — no tool-specific files at repo root. Human creates adapter **only** for tools actually used, by copying a snippet below.
 
 ---
 
-## How to add an adapter (general pattern)
+## How to add adapter (general pattern)
 
-1. Find out which instruction file your tool reads at startup (check its docs).
-2. Create that file at the location the tool expects.
-3. Put a short pointer in it — nothing more. Example body:
+1. Find which instruction file your tool reads at startup (check its docs).
+2. Create that file at location tool expects.
+3. Put short pointer in it — nothing more. Example body:
 
    ```markdown
    # Project AI Instructions
@@ -55,39 +47,33 @@ copilot-instructions ───┤──►  "Read ai-harness/START-HERE.md and f
    keep this file thin and let the harness be the single source of truth.
    ```
 
-That is the entire pattern. Everything below is convenience snippets and notes.
+Entire pattern. Everything below is convenience snippets and notes.
 
 ---
 
 ## Known tool entry points (verify against current docs)
 
-Tool conventions change. **Confirm the exact filename/path in your tool's
-current documentation before relying on it.** This table reflects common
-conventions at the time of writing and may be out of date — do not assume exact
-support for any specific tool.
+Tool conventions change. **Confirm exact filename/path in tool's current docs before relying.** Table reflects common conventions at time of writing — may be out of date.
 
-| Tool | Common root file it reads | Notes |
+| Tool | Common root file | Notes |
 |------|---------------------------|-------|
-| Many agents (shared convention) | `AGENTS.md` | A growing cross-tool convention; good default |
+| Many agents (shared convention) | `AGENTS.md` | Growing cross-tool convention; good default |
 | Claude Code | `CLAUDE.md` | Also supports nested `CLAUDE.md` files |
-| Google Antigravity CLI / AGY | `AGENTS.md` | CLI custom instructions |
-| GitHub Copilot CLI | `AGENTS.md` | CLI custom instructions |
-| GitHub Copilot IDE | `.github/copilot-instructions.md` | Repo-wide custom instructions |
-| Codex | `AGENTS.md` (or a tool-specific path) | Prefers the shared `AGENTS.md` convention |
+| GitHub Copilot | `.github/copilot-instructions.md` | Repo-wide custom instructions |
+| Codex | `AGENTS.md` (or tool-specific path) | Prefers shared `AGENTS.md` convention |
 | Gemini CLI | `GEMINI.md` | Project context file |
-| Pi | `AGENTS.md` or `CLAUDE.md` | Pi loads context files from global, parent, and current directories |
-| OpenCode | tool-specific | Check the tool's docs |
-| Aider | `CONVENTIONS.md` (added as read-only context) | You point Aider at it explicitly |
-| Cursor | `.cursorrules` (or project rules) | Check the tool's docs |
+| Pi | `PI.md` (or tool-specific) | Check tool's docs |
+| OpenCode | tool-specific | Check tool's docs |
+| Aider | `CONVENTIONS.md` (added as read-only context) | Point Aider at it explicitly |
+| Cursor | `.cursorrules` (or project rules) | Check tool's docs |
 
-If you only create **one** adapter, make it `AGENTS.md` — it is the most widely
-shared convention, and several tools read it.
+If creating **one** adapter, make it `AGENTS.md` — most widely shared convention, several tools read it.
 
 ---
 
 ## Ready-to-copy adapter snippets
 
-Each snippet is intentionally minimal. Replace nothing inside `ai-harness/`.
+Each intentionally minimal. Replace nothing inside `ai-harness/`.
 
 ### `AGENTS.md` (recommended default)
 
@@ -111,31 +97,7 @@ Find current work in `ai-harness/specs/<your-feature>/state.md`.
 Update that feature's state.md before ending the session (see START-HERE.md).
 ```
 
-### GitHub Copilot CLI
-
-```markdown
-# Agent Instructions
-
-This repository uses a tool-agnostic AI harness.
-**Start by reading `ai-harness/START-HERE.md` and follow its boot sequence.**
-You work one feature per branch; current work lives in
-`ai-harness/specs/<your-feature>/state.md`.
-Keep this file thin; the harness is the single source of truth.
-```
-
-### Google Antigravity CLI / AGY
-
-```markdown
-# Agent Instructions
-
-This repository uses a tool-agnostic AI harness.
-**Start by reading `ai-harness/START-HERE.md` and follow its boot sequence.**
-You work one feature per branch; current work lives in
-`ai-harness/specs/<your-feature>/state.md`.
-Keep this file thin; the harness is the single source of truth.
-```
-
-### `.github/copilot-instructions.md` (GitHub Copilot IDE)
+### `.github/copilot-instructions.md`
 
 ```markdown
 # Copilot Instructions
@@ -155,16 +117,14 @@ Read `ai-harness/START-HERE.md` first and follow it.
 The active feature/task is in `ai-harness/specs/<your-feature>/state.md`.
 ```
 
-### Pi
+### `PI.md`
 
 ```markdown
-# Agent Instructions
+# Pi Agent Rules
 
-This repository uses a tool-agnostic AI harness.
-**Start by reading `ai-harness/START-HERE.md` and follow its boot sequence.**
-You work one feature per branch; current work lives in
-`ai-harness/specs/<your-feature>/state.md`.
-Keep this file thin; the harness is the single source of truth.
+Initialize every session by reading `ai-harness/START-HERE.md`.
+Adopt the role for the current phase (`ai-harness/roles.md`), and keep task state
+in your feature's `ai-harness/specs/<your-feature>/state.md`, updated before stopping.
 ```
 
 ### `CONVENTIONS.md` (Aider — point Aider at it)
@@ -181,22 +141,16 @@ Current work: `ai-harness/specs/<your-feature>/state.md`.
 
 ## Multiple tools, one harness
 
-You can keep several adapter files at once (e.g. `AGENTS.md` **and** `CLAUDE.md`).
-Because each only points to `ai-harness/START-HERE.md`, they cannot drift apart
-in substance. When you change how you work, you change the harness, and every
-tool follows automatically.
+Keep several adapter files at once (e.g. `AGENTS.md` **and** `CLAUDE.md`). Because each only points to `ai-harness/START-HERE.md`, they can't drift apart. Change how you work → change harness → every tool follows automatically.
 
 ---
 
-## What a tool still needs from the human
+## What tool still needs from human
 
-The harness tells an agent *how to work*, but a few things remain the human's job
-to provide per tool, in that tool's own config (not in the harness):
+Harness tells agent *how to work*, but few things remain human's job per tool, in that tool's own config (not harness):
 
-- **Permissions / sandbox settings** — what commands the tool may run.
-- **Model selection** — the harness is indifferent; pick any capable model.
-- **Where the app source lives** — record this in
-  [`context/project.md`](context/project.md) so every tool learns it from the
-  harness rather than from tool-specific config.
+- **Permissions/sandbox settings** — what commands tool may run.
+- **Model selection** — harness is indifferent; pick any capable model.
+- **Where app source lives** — record in [`context/project.md`](context/project.md) so every tool learns it from harness.
 
-The boundary is simple: **how we work → harness; how this tool runs → tool config.**
+Boundary: **how we work → harness; how this tool runs → tool config.**

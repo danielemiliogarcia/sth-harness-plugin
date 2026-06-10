@@ -1,43 +1,35 @@
 # Project Context
 
-> **`<!-- CUSTOMIZE -->` This is the most project-specific file in the harness.**
-> Replace the placeholder content below with real information about *this*
-> project. Keep it short — it is read often. Aim for one screen.
+> **`<!-- CUSTOMIZE -->` Most project-specific file in harness.**
+> Replace placeholder content with real info about *this* project. Keep short — read often. Aim for one screen.
 
-This file gives an agent the stable, high-level facts about the project that do
-not belong to any single feature: what it is, what it is for, and where things
-live. It is part of the minimal context a session may load.
+Stable, high-level facts about project that don't belong to any single feature: what it is, what it's for, where things live. Part of minimal context a session may load.
 
 ---
 
 ## Reference documents
 
-> **Link the authoritative docs; don't duplicate them here.** `project.md` is a
-> thin context hub — a few stable facts plus pointers. Keep it small (it is
-> shared-static; see [`../parallel-work.md`](../parallel-work.md)).
+> **Link authoritative docs; don't duplicate.** `project.md` is thin context hub — few stable facts plus pointers. Keep small (shared-static; see [`../parallel-work.md`](../parallel-work.md)).
 
 <!-- CUSTOMIZE -->
 - Root [`README.md`](../../README.md) — _one line on what it covers._
-- _Architecture / design docs, ADRs, API specs, … as they exist._
+- _Architecture/design docs, ADRs, API specs, … as they exist._
 
-> If the root `README.md` is thin, either enrich it, link more docs above, or
-> capture the missing facts in the sections below.
+> If root `README.md` is thin, either enrich it, link more docs above, or capture missing facts below.
 
 ## What this project is
 
 <!-- CUSTOMIZE -->
-_One or two sentences: the product/system and the problem it solves._
+_One or two sentences: product/system and problem it solves._
 
-Example: "A service that ingests orders, validates them against inventory, and
-emits fulfilment events."
+Example: "Service that ingests orders, validates against inventory, emits fulfilment events."
 
-**Application type:** <!-- CUSTOMIZE --> _frontend | backend | fullstack | CLI |
-library | mobile | other._
+**Application type:** <!-- CUSTOMIZE --> _frontend | backend | fullstack | CLI | library | mobile | other._
 
 ## Who it is for
 
 <!-- CUSTOMIZE -->
-_Primary users / stakeholders and what they need from it._
+_Primary users/stakeholders and what they need._
 
 ## Goals and non-goals
 
@@ -45,11 +37,10 @@ _Primary users / stakeholders and what they need from it._
 - **Goals:** _what success looks like._
 - **Non-goals:** _things explicitly out of scope, to prevent drift._
 
-## Where the code lives
+## Where code lives
 
 <!-- CUSTOMIZE -->
-_Document the application source layout so every tool learns it from the harness.
-The harness lives in `ai-harness/`; the app lives elsewhere (e.g. `src/`)._
+_Document application source layout so every tool learns it from harness. Harness lives in `ai-harness/`; app lives elsewhere (e.g. `src/`)._
 
 ```text
 .
@@ -64,7 +55,7 @@ The harness lives in `ai-harness/`; the app lives elsewhere (e.g. `src/`)._
 ## How to build, run, and test
 
 <!-- CUSTOMIZE -->
-_The exact commands an agent should use. Fill these in once the stack is chosen._
+_Exact commands agent should use. Fill in once stack is chosen._
 
 ```text
 build:  <command>
@@ -84,12 +75,9 @@ lint:   <command>
 ## Glossary (domain language)
 
 <!-- CUSTOMIZE -->
-_Define the ubiquitous language so specs and code use the same words._
+_Define ubiquitous language so specs and code use same words._
 
-> **Parallel-safety:** this glossary is shared. A term introduced by one feature
-> goes in that feature's `spec.md` first; promote it here deliberately on the main
-> branch (so parallel feature branches don't conflict appending terms). See
-> [`../parallel-work.md`](../parallel-work.md).
+> **Parallel-safety:** glossary is shared. Term introduced by one feature goes in that feature's `spec.md` first; promote here deliberately on main branch (so parallel feature branches don't conflict appending terms). See [`../parallel-work.md`](../parallel-work.md).
 
 | Term | Meaning |
 |------|---------|
@@ -98,5 +86,4 @@ _Define the ubiquitous language so specs and code use the same words._
 
 ---
 
-Until customized, treat unknown items here as **open questions** and confirm with
-the human rather than assuming.
+Until customized, treat unknown items here as **open questions** and confirm with human rather than assuming.
