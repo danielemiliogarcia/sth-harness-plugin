@@ -1,0 +1,16 @@
+{
+  "name": "sth-harness",
+  "version": "0.1.0",
+  "description": "Install and drive the model-agnostic ai-harness: scaffold the harness folder, interview to fill specs, and implement pending specs through the spec-driven, hexagonal, stateful workflow.",
+  "author": {
+    "name": "danielemiliogarcia"
+  },
+  "license": "MIT",
+  "keywords": [
+    "ai-harness",
+    "copilot-cli",
+    "spec-driven",
+    "workflow"
+  ],
+  "skills": "./skills/"
+}

@@ -1,1 +1,0 @@
-- Create, copilot-cli plugin

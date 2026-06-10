@@ -21,11 +21,10 @@ drifts and rots), you create a **thin adapter**: a tiny root file whose only job
 is to point the tool at `ai-harness/START-HERE.md`.
 
 ```text
-          AGENTS.md ─┐
-          CLAUDE.md ─┤
- copilot-instructions ┤──►  "Read ai-harness/START-HERE.md and follow it."  ──►  ai-harness/
-          (Pi reads AGENTS.md) ┤
-        (others) ────┘
+             AGENTS.md ─┐
+             CLAUDE.md ─┤
+copilot-instructions ───┤──►  "Read ai-harness/START-HERE.md and follow it."  ──►  ai-harness/
+             (others) ──┘
 ```
 
 - The harness stays the **single source of truth**.
@@ -71,7 +70,8 @@ support for any specific tool.
 |------|---------------------------|-------|
 | Many agents (shared convention) | `AGENTS.md` | A growing cross-tool convention; good default |
 | Claude Code | `CLAUDE.md` | Also supports nested `CLAUDE.md` files |
-| GitHub Copilot | `.github/copilot-instructions.md` | Repo-wide custom instructions |
+| GitHub Copilot CLI | `AGENTS.md` | CLI custom instructions |
+| GitHub Copilot IDE | `.github/copilot-instructions.md` | Repo-wide custom instructions |
 | Codex | `AGENTS.md` (or a tool-specific path) | Prefers the shared `AGENTS.md` convention |
 | Gemini CLI | `GEMINI.md` | Project context file |
 | Pi | `AGENTS.md` or `CLAUDE.md` | Pi loads context files from global, parent, and current directories |
@@ -110,7 +110,19 @@ Find current work in `ai-harness/specs/<your-feature>/state.md`.
 Update that feature's state.md before ending the session (see START-HERE.md).
 ```
 
-### `.github/copilot-instructions.md`
+### GitHub Copilot CLI
+
+```markdown
+# Agent Instructions
+
+This repository uses a tool-agnostic AI harness.
+**Start by reading `ai-harness/START-HERE.md` and follow its boot sequence.**
+You work one feature per branch; current work lives in
+`ai-harness/specs/<your-feature>/state.md`.
+Keep this file thin; the harness is the single source of truth.
+```
+
+### `.github/copilot-instructions.md` (GitHub Copilot IDE)
 
 ```markdown
 # Copilot Instructions

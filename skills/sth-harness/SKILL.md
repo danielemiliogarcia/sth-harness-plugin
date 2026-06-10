@@ -1,12 +1,12 @@
 ---
 name: sth-harness
-description: Codex and Pi entry point for installing ai-harness, adding feature specs, and implementing the next pending spec without Claude slash commands.
+description: Codex, Pi, and Copilot CLI entry point for installing ai-harness, adding feature specs, and implementing the next pending spec without Claude slash commands.
 ---
 
 # sth-harness
 
-Use this skill when the user asks Codex or Pi to initialize the ai-harness, add a
-new feature spec, or implement the next pending spec.
+Use this skill when the user asks Codex, Pi, or Copilot CLI to initialize the
+ai-harness, add a new feature spec, or implement the next pending spec.
 
 ## Resolve bundled files
 
@@ -15,7 +15,7 @@ new feature spec, or implement the next pending spec.
 - Bundled scripts live under `../../scripts/` from this skill directory.
 - The bundled harness template lives under `../../template/ai-harness/`.
 - In Claude Code, `CLAUDE_PLUGIN_ROOT` may also point at the plugin root, but
-  do not require it in Codex or Pi.
+  do not require it in Codex, Pi, or Copilot CLI.
 
 ## Intent routing
 
@@ -49,7 +49,8 @@ feature. Use the `harness-interview` skill for all question-asking.
    link, do not duplicate.
 3. Wire the user's AI tool to the harness using the `harness-tool-linking` skill.
    For Codex, run the bundled `scripts/link-codex.sh`; for Pi, run the bundled
-   `scripts/link-pi.sh`. Both write `AGENTS.md` so the tool reads
+   `scripts/link-pi.sh`; for Copilot CLI, run the bundled
+   `scripts/link-copilot-cli.sh`. Each writes `AGENTS.md` so the tool reads
    `AGENTS.md` -> `ai-harness/START-HERE.md`.
 4. Create the first feature:
    - Read `./ai-harness/specs/global-spec-info.md` and
@@ -69,8 +70,8 @@ feature. Use the `harness-interview` skill for all question-asking.
    copied harness docs like `ai-harness/README.md`,
    `ai-harness/context/testing.md`, `ai-harness/context/architecture.md`, or
    decision records.
-6. Report what was created and tell the user they can ask Codex or Pi to implement the
-   next pending spec when ready.
+6. Report what was created and tell the user they can ask Codex, Pi, or Copilot
+   CLI to implement the next pending spec when ready.
 
 Ask one question at a time. Never invent requirements; ask or record an open
 question. The harness reference files are the source of truth.

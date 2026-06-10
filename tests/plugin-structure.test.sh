@@ -19,6 +19,11 @@ check "$(jq -r .name "$ROOT/.codex-plugin/plugin.json" 2>/dev/null)" "sth-harnes
 check "$(jq -r .skills "$ROOT/.codex-plugin/plugin.json" 2>/dev/null)" "./skills/" "codex plugin skills path"
 check "$(jq -r '.interface.displayName' "$ROOT/.codex-plugin/plugin.json" 2>/dev/null)" "sth-harness" "codex plugin display name"
 
+# Copilot CLI manifest valid + skills entry point
+check "$(jq -r .name "$ROOT/plugin.json" 2>/dev/null)" "sth-harness" "copilot plugin.json name"
+check "$(jq -r .skills "$ROOT/plugin.json" 2>/dev/null)" "./skills/" "copilot plugin skills path"
+check "$(jq -r '.keywords | index("copilot-cli") != null' "$ROOT/plugin.json" 2>/dev/null)" "true" "copilot-cli keyword"
+
 # Pi package manifest valid + resource paths
 check "$(jq -r .name "$ROOT/package.json" 2>/dev/null)" "sth-harness" "pi package name"
 check "$(jq -r '.keywords | index("pi-package") != null' "$ROOT/package.json" 2>/dev/null)" "true" "pi-package keyword"
@@ -37,7 +42,7 @@ for p in sth-harness-init sth-harness-add-spec sth-harness-implement-next-spec; 
 for s in harness-interview harness-implement harness-tool-linking sth-harness; do exists "skills/$s/SKILL.md"; done
 
 # scripts the commands and skills call, executable
-for sc in copy-harness link-claude-code link-codex link-pi seed-readme; do
+for sc in copy-harness link-claude-code link-codex link-pi link-copilot-cli seed-readme; do
   exists "scripts/$sc.sh"
   [ -x "$ROOT/scripts/$sc.sh" ] && check yes yes "$sc.sh executable" || check no yes "$sc.sh executable"
 done

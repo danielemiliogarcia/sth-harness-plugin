@@ -1,8 +1,8 @@
 # sth-harness
 
-A Claude Code, Codex, and Pi package that installs and drives the
-model-agnostic **ai-harness** (spec-driven, hexagonal, stateful, resumable
-development in folders + Markdown).
+A Claude Code, Codex, Pi, and GitHub Copilot CLI plugin/package that installs
+and drives the model-agnostic **ai-harness** (spec-driven, hexagonal, stateful,
+resumable development in folders + Markdown).
 
 ## Commands
 Claude Code exposes slash commands:
@@ -27,11 +27,18 @@ Pi exposes prompt templates:
 - `/sth-harness-add-spec [feature-name]`
 - `/sth-harness-implement-next-spec`
 
+GitHub Copilot CLI exposes the `sth-harness` skill. Ask Copilot CLI to:
+
+- "Initialize this repo with the ai-harness."
+- "Add a new ai-harness spec for <feature>."
+- "Implement the next pending ai-harness spec."
+
 ## What it ships
 - `template/ai-harness/` — the harness payload, copied verbatim on `init`.
 - `scripts/copy-harness.sh` — deterministic, no-clobber install.
 - `scripts/link-codex.sh` — idempotent `AGENTS.md` wiring for Codex.
 - `scripts/link-pi.sh` — idempotent `AGENTS.md` wiring for Pi.
+- `scripts/link-copilot-cli.sh` — idempotent `AGENTS.md` wiring for Copilot CLI.
 - `skills/` — the interview and implementation logic the commands and skills rely on.
 - `prompts/` — Pi prompt templates for the three harness workflows.
 
@@ -53,6 +60,16 @@ pi install /path/to/sth-harness-plugin
 
 Pi reads `package.json`, loads the bundled `skills/` and `prompts/`, and exposes
 the namespaced prompt templates above.
+
+For GitHub Copilot CLI, install this directory as a local plugin:
+
+```bash
+copilot plugin install /path/to/sth-harness-plugin
+```
+
+Copilot CLI reads `plugin.json` and loads the bundled `skills/`. Direct local
+installs are useful for development; Copilot CLI warns that marketplace installs
+will be the supported path for durable distribution.
 
 ## Maintaining the bundled payload
 `template/ai-harness/` is a **version-pinned snapshot** of the canonical
