@@ -1,2 +1,0 @@
-- improve CUSTOMIZE field filling at init
-- Create, codex, pi, and copilot-cli plugin

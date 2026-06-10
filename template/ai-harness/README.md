@@ -2,9 +2,9 @@
 
 A **model- and provider-agnostic** development harness, built entirely from
 folders and Markdown files. Any AI coding assistant that can read repository
-files can follow it — Claude Code, Codex, GitHub Copilot, Pi, OpenCode, Gemini
-CLI, Aider, or any future agent. Nothing inside `ai-harness/` depends on a
-specific model, vendor, plugin, or runtime tool.
+files can follow it — Claude Code, Codex, GitHub Copilot, Google Antigravity CLI,
+Pi, OpenCode, Gemini CLI, Aider, or any future agent. Nothing inside
+`ai-harness/` depends on a specific model, vendor, plugin, or runtime tool.
 
 > **New session?** Don't start here — start at [`START-HERE.md`](START-HERE.md).
 > This README explains *how the harness works*; you only need to read it once.

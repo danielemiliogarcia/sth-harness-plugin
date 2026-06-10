@@ -1,0 +1,32 @@
+{
+  "name": "sth-harness",
+  "version": "0.1.0",
+  "description": "Install and drive the model-agnostic ai-harness: scaffold the harness folder, interview to fill specs, and implement pending specs through the spec-driven, hexagonal, stateful workflow.",
+  "author": {
+    "name": "danielemiliogarcia"
+  },
+  "keywords": [
+    "ai-harness",
+    "codex",
+    "spec-driven",
+    "workflow"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "sth-harness",
+    "shortDescription": "Install and drive the ai-harness from Codex.",
+    "longDescription": "Scaffold the model-agnostic ai-harness, interview to fill project and feature specs, and implement pending specs through a stateful workflow.",
+    "developerName": "danielemiliogarcia",
+    "category": "Productivity",
+    "capabilities": [
+      "Skills",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Initialize this repo with the ai-harness.",
+      "Add a new ai-harness spec for my feature.",
+      "Implement the next pending ai-harness spec."
+    ],
+    "brandColor": "#2563EB"
+  }
+}
