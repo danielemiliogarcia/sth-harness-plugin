@@ -22,6 +22,6 @@ Bootstrap the AI harness into the user's repository, then create the first featu
    - Copy `ai-harness/specs/_template/` to `ai-harness/specs/<feature>/`.
    - Fill the bare `spec.md` and `state.md` from the answers, using the legal vocabulary verbatim. Set `phase`, `overall: todo`, and a concrete `next`.
 5. Before finishing, re-read every file this init flow created or edited intentionally (`./ai-harness/context/project.md`, the first feature's `spec.md` and `state.md`, root adapter files, and a seeded README if one was created). If any actionable `<!-- CUSTOMIZE -->` placeholder remains, keep interviewing or fill from known facts until it is gone. Do not count documentation-only occurrences that merely explain the marker itself, such as this command file or copied harness docs like `ai-harness/README.md`, `ai-harness/context/testing.md`, `ai-harness/context/architecture.md`, or decision records.
-6. Report what was created and tell the user to run `/sth-harness:execute-next-spec` when ready.
+6. Report what was created and tell the user to run `/sth-harness:implement-next-spec` when ready.
 
 Ask one question at a time. Never invent requirements — ask or record an open question. The harness reference files are the source of truth for structure and vocabulary.

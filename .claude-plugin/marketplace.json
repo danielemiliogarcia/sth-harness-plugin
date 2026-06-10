@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "sth-harness",
-      "description": "Scaffold the ai-harness, interview to fill specs, and execute pending specs through the spec-driven, hexagonal, stateful workflow.",
+      "description": "Scaffold the ai-harness, interview to fill specs, and implement pending specs through the spec-driven, hexagonal, stateful workflow.",
       "version": "0.1.0",
       "source": "./",
       "category": "productivity"

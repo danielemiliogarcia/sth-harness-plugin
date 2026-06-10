@@ -12,27 +12,27 @@ Claude Code exposes slash commands:
   `state.md`.
 - `/sth-harness:add-spec [feature-name]` — in an initialized repo, interview for a
   new feature and create its files.
-- `/sth-harness:execute-next-spec` — pick the next pending spec (you confirm) and
-  work it through the harness until blocked, a decision is needed, or it is done.
+- `/sth-harness:implement-next-spec` — pick the next pending spec (you confirm) and
+  implement it through the harness until blocked, a decision is needed, or it is done.
 
 Codex exposes the `sth-harness` skill instead of slash commands. Ask Codex to:
 
 - "Initialize this repo with the ai-harness."
 - "Add a new ai-harness spec for <feature>."
-- "Execute the next pending ai-harness spec."
+- "Implement the next pending ai-harness spec."
 
 Pi exposes prompt templates:
 
 - `/sth-harness-init [feature-name]`
 - `/sth-harness-add-spec [feature-name]`
-- `/sth-harness-execute-next-spec`
+- `/sth-harness-implement-next-spec`
 
 ## What it ships
 - `template/ai-harness/` — the harness payload, copied verbatim on `init`.
 - `scripts/copy-harness.sh` — deterministic, no-clobber install.
 - `scripts/link-codex.sh` — idempotent `AGENTS.md` wiring for Codex.
 - `scripts/link-pi.sh` — idempotent `AGENTS.md` wiring for Pi.
-- `skills/` — the interview and execution logic the commands and skills rely on.
+- `skills/` — the interview and implementation logic the commands and skills rely on.
 - `prompts/` — Pi prompt templates for the three harness workflows.
 
 The copied folder is always named `ai-harness/`; this plugin is `sth-harness`.

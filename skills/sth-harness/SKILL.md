@@ -1,12 +1,12 @@
 ---
 name: sth-harness
-description: Codex and Pi entry point for installing ai-harness, adding feature specs, and executing the next pending spec without Claude slash commands.
+description: Codex and Pi entry point for installing ai-harness, adding feature specs, and implementing the next pending spec without Claude slash commands.
 ---
 
 # sth-harness
 
 Use this skill when the user asks Codex or Pi to initialize the ai-harness, add a
-new feature spec, or execute the next pending spec.
+new feature spec, or implement the next pending spec.
 
 ## Resolve bundled files
 
@@ -21,7 +21,8 @@ new feature spec, or execute the next pending spec.
 
 - `init`, `initialize`, `bootstrap`, or "install the harness" -> run Init.
 - `add spec`, `new spec`, or "create a feature" -> run Add Spec.
-- `execute`, `next spec`, or "continue harness work" -> run Execute Next Spec.
+- `implement next spec`, `implement`, `next spec`, or "continue harness work"
+  -> run Implement Next Spec.
 - If the user's wording is ambiguous, ask one short clarifying question.
 
 ## Init
@@ -68,7 +69,7 @@ feature. Use the `harness-interview` skill for all question-asking.
    copied harness docs like `ai-harness/README.md`,
    `ai-harness/context/testing.md`, `ai-harness/context/architecture.md`, or
    decision records.
-6. Report what was created and tell the user they can ask Codex or Pi to execute the
+6. Report what was created and tell the user they can ask Codex or Pi to implement the
    next pending spec when ready.
 
 Ask one question at a time. Never invent requirements; ask or record an open
@@ -104,10 +105,10 @@ skill for question-asking.
 Write only inside `ai-harness/specs/<feature>/` on the current branch. Do not run
 git commands.
 
-## Execute Next Spec
+## Implement Next Spec
 
-Work the next pending feature following the harness. Use the `harness-execute`
-skill for the execution loop.
+Implement the next pending feature following the harness. Use the
+`harness-implement` skill for the implementation loop.
 
 ### Preconditions
 
@@ -124,7 +125,7 @@ skill for the execution loop.
    To break a tie at the top, read only the tied specs' `spec.md` and prefer the
    one whose highest-priority requirement is greatest: `must` > `should` >
    `could`. If still tied, present the tied specs and let the user pick.
-4. For the chosen feature, follow the `harness-execute` skill: act as Session
+4. For the chosen feature, follow the `harness-implement` skill: act as Session
    Loader, then adopt the role for the current phase from `ai-harness/roles.md`.
    Read only that role's section and honor the feature's `state.md` read budget.
 5. Work the harness loop for the phase. During implementation, set the task

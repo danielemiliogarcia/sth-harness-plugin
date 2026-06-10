@@ -1,9 +1,9 @@
 ---
-name: harness-execute
-description: Role-driven execution loop that works one harness feature through its phases until blocked, a decision is needed, or the spec is done. Used by /sth-harness:execute-next-spec.
+name: harness-implement
+description: Role-driven implementation loop that works one harness feature through its phases until blocked, a decision is needed, or the spec is done. Used by /sth-harness:implement-next-spec.
 ---
 
-# Harness Execute
+# Harness Implement
 
 Drive one feature through the harness lifecycle, honoring minimal-context reading and durable state.
 
@@ -28,4 +28,3 @@ STOP and hand back when ANY of:
 
 ## Before stopping
 Update `state.md` (phase, last completed step, next action, task states). Report the stop reason and the single next action. The file is the truth — never rely on conversation memory.
-
